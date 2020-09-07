@@ -13,7 +13,7 @@ window.onValueChange = function (event) {
   function render() {
     document.querySelector("main").innerHTML = `
     <select onchange="onValueChange(event)">
-      ${enums.map(
+      ${(enums || []).map(
         (e) => `<option ${e === value.selectedEnum && "selected"}>${e}</option>`
       )}
     </select>
