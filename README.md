@@ -1,1 +1,1 @@
-# crystallize-pim-plugins
+# Crystallize PIM Enum Component Plugin

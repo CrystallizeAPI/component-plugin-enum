@@ -1,0 +1,19 @@
+{
+  "name": "component-plugin-enum",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "dev": "npx servor ./src --reload --browse"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrystallizeAPI/component-plugin-enum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CrystallizeAPI/component-plugin-enum/issues"
+  },
+  "homepage": "https://github.com/CrystallizeAPI/component-plugin-enum#readme"
+}
