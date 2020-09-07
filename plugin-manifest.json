@@ -1,8 +1,12 @@
 {
   "version": "0.0.0",
+  "name": "Enum component",
   "src": {
+    "config": {
+      "iframe": "https://crystallizeapi.github.io/component-plugin-enum/src/component-config/index.html"
+    },
     "editor": {
-      "iframe": ""
+      "iframe": "https://crystallizeapi.github.io/component-plugin-enum/src/editor/index.html"
     }
   }
 }
