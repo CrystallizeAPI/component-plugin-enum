@@ -5,18 +5,44 @@ window.onValueChange = function (event) {
 };
 
 (async function init() {
-  const { enums } = await sdk.field.getComponentConfig();
+  const { enums, multiple } = await sdk.field.componentConfig();
   const value = await sdk.field.getValue();
+
+  const main = document.querySelector("main");
 
   render();
 
   function render() {
-    document.querySelector("main").innerHTML = `
-    <select onchange="onValueChange(event)">
-      ${(enums || []).map(
-        (e) => `<option ${e === value.selectedEnum && "selected"}>${e}</option>`
-      )}
-    </select>
-  `;
+    if (multiple) {
+      main.innerHTML = `
+        <select onchange="onValueChange(event)">
+          ${(enums || [])
+            .map(
+              (e) =>
+                `<option ${
+                  e === value.selectedEnum && "selected"
+                }>${e}</option>`
+            )
+            .join("")}
+        </select>
+      `;
+    } else {
+      main.innerHTML = `
+        <div>
+          ${enums
+            .map(
+              (e, index) => `
+              <div>
+                <label>
+                  <input type="checkbox" name="enum${index}" />
+                  ${e}
+                </label>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+      `;
+    }
   }
 })();

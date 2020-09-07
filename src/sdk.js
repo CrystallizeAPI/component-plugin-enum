@@ -19,6 +19,11 @@ function send({ action, ...rest }) {
 }
 
 export const sdk = {
+  context: {
+    getLanguage() {
+      return Promise.resolve("en");
+    },
+  },
   field: {
     getValue() {
       return Promise.resolve(
@@ -30,10 +35,8 @@ export const sdk = {
       localStorage.setItem("editorValue", JSON.stringify(v));
       return Promise.resolve();
     },
-    getComponentConfig() {
-      return Promise.resolve(
-        JSON.parse(localStorage.getItem("componentConfig") || "{}")
-      );
+    componentConfig() {
+      return sdk.componentConfig.getValue();
     },
   },
   componentConfig: {
@@ -41,7 +44,7 @@ export const sdk = {
       localStorage.setItem("componentConfig", JSON.stringify(config));
     },
     getValue() {
-      localStorage.getItem("componentConfig");
+      return JSON.parse(localStorage.getItem("componentConfig") || "{}");
     },
   },
 };

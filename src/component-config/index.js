@@ -2,34 +2,56 @@ import { sdk } from "../sdk.js";
 
 const form = document.querySelector("form");
 
-let enums = ["", "", "", ""];
+const config = {
+  enums: ["", ""],
+  multiple: false,
+};
 
 window.removeEnum = function (index) {
-  enums.splice(index, 1);
+  config.enums.splice(index, 1);
+  sdk.componentConfig.setValue(config);
   render();
 };
 
 window.addEnum = function () {
-  enums.push("");
+  config.enums.push("");
+  sdk.componentConfig.setValue(config);
   render();
 };
 
-// Listen for any input change
-form.addEventListener("change", function onFormChange() {
-  const formData = new FormData(form);
-  formData.getAll("enumValue").forEach((e, i) => (enums[i] = e));
+(function init() {
+  const conf = sdk.componentConfig.getValue();
 
-  sdk.componentConfig.setValue({
-    enums,
+  if (conf?.enums) {
+    config.enums = conf.enums;
+    config.multiple = !!conf.multiple;
+  }
+
+  // Listen for any input change
+  form.addEventListener("change", function onFormChange() {
+    const formData = new FormData(form);
+
+    config.multiple = formData.get("multiple") === "on";
+
+    formData.getAll("enumValue").forEach((e, i) => (config.enums[i] = e));
+
+    sdk.componentConfig.setValue(config);
   });
-});
 
-render();
+  render();
+})();
 
 function render() {
   form.innerHTML = `
-    <h3>Please create the available enum values</h3>
-    ${enums
+    <div style="margin: 15px 0;">
+      <label>
+        Allow multiple
+        <input type="checkbox" ${
+          config.multiple && "checked"
+        } name="multiple" />
+      </label>
+    </div>
+    ${config.enums
       .map(
         (e, index) => `
         <div>
