@@ -17,8 +17,8 @@ addEventListener(
   function onResize() {
     send({
       action: "resize",
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: window.outerWidth,
+      height: window.outerHeight,
     });
   },
   false
