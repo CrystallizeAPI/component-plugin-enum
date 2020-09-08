@@ -22,11 +22,15 @@ send({
   action: "init",
 });
 
+// Todo: set the appropriate origin?
+let targetOrigin = "*";
+try {
+  const referrerUrl = new URL(document.referrer);
+  targetOrigin = referrerUrl.origin;
+} catch (e) {}
+
 // Talk to the parent frame
 function send({ ...args }) {
-  // Todo: set the appropriate origin
-  const targetOrigin = "*";
-
   window.parent.postMessage(JSON.stringify({ frameId, ...args }), targetOrigin);
 }
 
