@@ -31,6 +31,8 @@ try {
 
 // Talk to the parent frame
 function send({ ...args }) {
+  console.log("POST MESSAGE");
+  console.log(JSON.stringify({ frameId, ...args }), targetOrigin);
   window.parent.postMessage(JSON.stringify({ frameId, ...args }), targetOrigin);
 }
 
