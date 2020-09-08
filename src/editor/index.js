@@ -1,12 +1,17 @@
 import { sdk } from "../sdk.js";
 
 window.onValueChange = function (event) {
-  sdk.field.setValue({ selectedEnum: event.target.value });
+  sdk.field.setValue(JSON.stringify({ selectedEnum: event.target.value }));
 };
 
 (async function init() {
   const { enums, multiple } = await sdk.field.componentConfig();
-  const value = await sdk.field.getValue();
+  const valueAsString = await sdk.field.getValue();
+
+  let value = { selectedEnum: null };
+  try {
+    value = JSON.parse(valueAsString);
+  } catch (e) {}
 
   const main = document.querySelector("main");
 

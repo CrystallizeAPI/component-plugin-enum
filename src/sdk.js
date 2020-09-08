@@ -23,8 +23,49 @@ function onResize() {
 addEventListener("resize", onResize, false);
 
 // Talk to the parent frame
-function send({ ...args }) {
+function send(args) {
   window.parent.postMessage(JSON.stringify({ frameId, ...args }), targetOrigin);
+}
+
+// Listen for incoming messages
+window.addEventListener(
+  "message",
+  function onMessage(ev) {
+    try {
+      const payload = JSON.parse(ev.data);
+      if (payload.frameId === frameId) {
+        const { messageId, ...data } = payload;
+        const listenerIndex = listeningQueue.findIndex(
+          (l) => l.messageId === messageId
+        );
+        if (listenerIndex !== -1) {
+          const [listener] = listeningQueue.splice(listenerIndex, 1);
+          listener.callback(data);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  false
+);
+
+let messageIdIncr = 0;
+const listeningQueue = [];
+function sendAndWaitForResponse(args) {
+  return new Promise((r) => {
+    const messageId = messageIdIncr++;
+
+    listeningQueue.push({
+      messageId,
+      callback: r,
+    });
+
+    send({
+      messageId,
+      ...args,
+    });
+  });
 }
 
 export const sdk = {
@@ -37,15 +78,14 @@ export const sdk = {
     },
   },
   field: {
-    getValue() {
-      return Promise.resolve(
-        JSON.parse(localStorage.getItem("editorValue") || "{}")
-      );
+    async getValue() {
+      const { value } = await sendAndWaitForResponse({
+        action: "field.getValue",
+      });
+      return value;
     },
-    setValue(v) {
-      value = v;
-      localStorage.setItem("editorValue", JSON.stringify(v));
-      return Promise.resolve();
+    setValue(value) {
+      send({ action: "field.setValue", value });
     },
     componentConfig() {
       return sdk.componentConfig.getValue();
