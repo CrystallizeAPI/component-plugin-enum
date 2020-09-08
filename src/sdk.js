@@ -19,8 +19,6 @@ function onResize() {
   });
 }
 
-onResize();
-
 // Automatically tell listeners about (possible) iframe dimensions
 addEventListener("resize", onResize, false);
 

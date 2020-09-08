@@ -46,5 +46,7 @@ window.onValueChange = function (event) {
         </div>
       `;
     }
+
+    sdk.layout.resize();
   }
 })();
