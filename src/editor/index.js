@@ -15,16 +15,18 @@ window.onValueChange = function (event) {
   function render() {
     if (!multiple) {
       main.innerHTML = `
-        <select onchange="onValueChange(event)">
-          ${(enums || [])
-            .map(
-              (e) =>
-                `<option ${
-                  e === value.selectedEnum && "selected"
-                }>${e}</option>`
-            )
-            .join("")}
-        </select>
+        <span class="fancy-select">
+          <select onchange="onValueChange(event)">
+            ${(enums || [])
+              .map(
+                (e) =>
+                  `<option ${
+                    e === value.selectedEnum && "selected"
+                  }>${e}</option>`
+              )
+              .join("")}
+          </select>
+        </span>
       `;
     } else {
       main.innerHTML = `
