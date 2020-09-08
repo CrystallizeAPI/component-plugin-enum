@@ -53,6 +53,10 @@ window.addEventListener(
 let messageIdIncr = 0;
 const listeningQueue = [];
 function sendAndWaitForResponse(args) {
+  if (targetOrigin === location.origin) {
+    return Promise.resolve({});
+  }
+
   return new Promise((r) => {
     const messageId = messageIdIncr++;
 
@@ -82,6 +86,7 @@ export const sdk = {
       const { value } = await sendAndWaitForResponse({
         action: "field.getValue",
       });
+
       return value;
     },
     setValue(value) {
