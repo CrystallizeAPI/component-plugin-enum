@@ -7,6 +7,67 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
+.config-outer {
+  background: #d0f1da;
+  padding: 15px 50px;
+}
+
+.config-inner {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+}
+
+.checkbox-group {
+}
+
+.input-group {
+  display: flex;
+  background: #fff;
+  border: 1px solid #dfdfdf;
+  border-radius: 15px;
+  margin-right: 25px;
+  margin-bottom: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.input-add {
+  background: #fff;
+  border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  border: 1px solid #dfdfdf;
+  justify-content: center;
+}
+.input-group-field {
+  border: none;
+  padding: 8px 25px;
+  border-radius: 15px;
+}
+.input-group-btn {
+  border: none;
+  background: #fff;
+  border-radius: 0 15px 15px 0;
+  padding: 8px 15px;
+  border-left: 1px solid #dfdfdf;
+}
+.input-group-btn:hover {
+  background: #dfdfdf;
+}
+
+.input-group-label {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.5;
+}
+
+.editor-outer {
+  background: #d0f1da;
+  padding: 15px 50px;
+}
 
 .fancy-select {
   display: inline-block;
