@@ -13,7 +13,7 @@ window.onValueChange = function (event) {
   render();
 
   function render() {
-    if (multiple) {
+    if (!multiple) {
       main.innerHTML = `
         <select onchange="onValueChange(event)">
           ${(enums || [])
