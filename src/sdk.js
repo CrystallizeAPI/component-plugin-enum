@@ -14,8 +14,8 @@ try {
 function onResize() {
   send({
     action: "resize",
-    width: window.outerWidth,
-    height: window.outerHeight,
+    width: document.body.offsetWidth,
+    height: document.body.offsetHeight,
   });
 }
 
