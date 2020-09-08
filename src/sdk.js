@@ -30,6 +30,9 @@ function send({ ...args }) {
 }
 
 export const sdk = {
+  layout: {
+    resize: onResize,
+  },
   context: {
     getLanguage() {
       return Promise.resolve("en");
