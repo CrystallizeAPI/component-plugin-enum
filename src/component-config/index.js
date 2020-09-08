@@ -36,7 +36,6 @@ window.addEnum = function () {
     formData.getAll("enumValue").forEach((e, i) => (config.enums[i] = e));
 
     sdk.componentConfig.setValue(config);
-    sdk.layout.resize();
   });
 
   render();
@@ -71,4 +70,6 @@ function render() {
       </svg>
     </button>
   `;
+
+  sdk.layout.resize();
 }

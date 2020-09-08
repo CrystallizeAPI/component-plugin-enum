@@ -1,12 +1,26 @@
 import { sdk } from "../sdk.js";
 
-window.onValueChange = function (event) {
-  sdk.field.setValue({ selectedEnum: event.target.value });
-};
-
 (async function init() {
   const { enums, multiple } = await sdk.field.componentConfig();
-  const value = await sdk.field.getValue();
+  const valueAsString = await sdk.field.getValue();
+
+  window.onFormChange = function (event) {
+    const formData = new FormData(document.querySelector("form"));
+    const selectedEnums = formData.getAll("enumValue");
+
+    sdk.field.setValue(JSON.stringify({ selectedEnums }));
+  };
+
+  window.onSingleValueChange = function (event) {
+    sdk.field.setValue(JSON.stringify({ selectedEnums: [event.target.value] }));
+  };
+
+  let value = { selectedEnums: [] };
+  if (typeof valueAsString === "string") {
+    try {
+      value = JSON.parse(valueAsString);
+    } catch (e) {}
+  }
 
   const main = document.querySelector("main");
 
@@ -16,12 +30,12 @@ window.onValueChange = function (event) {
     if (!multiple) {
       main.innerHTML = `
         <span class="fancy-select">
-          <select onchange="onValueChange(event)">
+          <select onchange="onSingleValueChange(event)">
             ${(enums || [])
               .map(
                 (e) =>
                   `<option ${
-                    e === value.selectedEnum && "selected"
+                    value.selectedEnums.some((sel) => sel === e) && "selected"
                   }>${e}</option>`
               )
               .join("")}
@@ -30,21 +44,28 @@ window.onValueChange = function (event) {
       `;
     } else {
       main.innerHTML = `
-        <div>
+        <form onchange="onFormChange(event)">
           ${enums
             .map(
               (e, index) => `
               <div>
                 <label>
-                  <input type="checkbox" name="enum${index}" />
+                  <input
+                    type="checkbox"
+                    name="enumValue"
+                    value="${e}"
+                    ${value.selectedEnums.some((sel) => sel === e) && "checked"}
+                  />
                   ${e}
                 </label>
               </div>
             `
             )
             .join("")}
-        </div>
+        </form>
       `;
     }
+
+    sdk.layout.resize();
   }
 })();
