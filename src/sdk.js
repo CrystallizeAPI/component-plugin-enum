@@ -11,23 +11,18 @@ try {
   targetOrigin = referrerUrl.origin;
 } catch (e) {}
 
-// Automatically tell listeners about (possible) iframe dimensions
-addEventListener(
-  "resize",
-  function onResize() {
-    send({
-      action: "resize",
-      width: window.outerWidth,
-      height: window.outerHeight,
-    });
-  },
-  false
-);
+function onResize() {
+  send({
+    action: "resize",
+    width: window.outerWidth,
+    height: window.outerHeight,
+  });
+}
 
-// Ping back to the initiator
-send({
-  action: "init",
-});
+onResize();
+
+// Automatically tell listeners about (possible) iframe dimensions
+addEventListener("resize", onResize, false);
 
 // Talk to the parent frame
 function send({ ...args }) {
