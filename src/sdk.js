@@ -1,11 +1,15 @@
 let value = null;
 
+// Determine the unique frame identifier
+const url = new URL(location.href);
+const frameId = url.searchParams.get("fid");
+
 // Automatically tell listeners about (possible) iframe dimensions
 addEventListener(
   "resize",
-  function onResize(event) {
+  function onResize() {
     send({
-      action: "frame-resize",
+      action: "resize",
       width: window.innerWidth,
       height: window.innerHeight,
     });
@@ -13,9 +17,17 @@ addEventListener(
   false
 );
 
-// Mock send
-function send({ action, ...rest }) {
-  console.log(action, rest);
+// Ping back to the initiator
+send({
+  action: "init",
+});
+
+// Talk to the parent frame
+function send({ ...args }) {
+  // Todo: set the appropriate origin
+  const targetOrigin = "*";
+
+  window.parent.postMessage(JSON.stringify({ frameId, ...args }), targetOrigin);
 }
 
 export const sdk = {
