@@ -4,6 +4,13 @@ let value = null;
 const url = new URL(location.href);
 const frameId = url.searchParams.get("fid");
 
+// Todo: set the appropriate origin?
+let targetOrigin = "*";
+try {
+  const referrerUrl = new URL(document.referrer);
+  targetOrigin = referrerUrl.origin;
+} catch (e) {}
+
 // Automatically tell listeners about (possible) iframe dimensions
 addEventListener(
   "resize",
@@ -21,13 +28,6 @@ addEventListener(
 send({
   action: "init",
 });
-
-// Todo: set the appropriate origin?
-let targetOrigin = "*";
-try {
-  const referrerUrl = new URL(document.referrer);
-  targetOrigin = referrerUrl.origin;
-} catch (e) {}
 
 // Talk to the parent frame
 function send({ ...args }) {
